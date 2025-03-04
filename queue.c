@@ -4,6 +4,33 @@
 
 #include "queue.h"
 
+/**
+ * create_new_element() - Create an element
+ * @s: string would be inserted
+ *
+ * Argument s points to the string to be stored.
+ *
+ * Return: The pointer to the element.
+ */
+element_t *create_new_element(char *s)
+{
+    if (!s || !*s)
+        return NULL;
+
+    element_t *new_element = malloc(sizeof(element_t));
+    if (!new_element) {
+        free(new_element);
+        return NULL;
+    }
+
+    new_element->value = strdup(s);
+    if (!new_element->value) {
+        free(new_element);
+        return NULL;
+    }
+    return new_element;
+}
+
 /* Create an empty queue */
 struct list_head *q_new()
 {
@@ -30,6 +57,13 @@ void q_free(struct list_head *head)
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
+    if (!head || !s || !*s)
+        return false;
+
+    element_t *new_element = create_new_element(s);
+    if (!new_element)
+        return false;
+    list_add(&new_element->list, head);
     return true;
 }
 
