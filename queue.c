@@ -204,11 +204,11 @@ void q_swap(struct list_head *head)
     if (!head || list_empty(head) || list_is_singular(head))
         return;
 
-    struct list_head *current, *next;
+    struct list_head *current = head->next;
 
-    list_for_each (current, head) {
-        next = current->next;
-        list_move(current, next);
+    while (current != head && current->next != head) {
+        list_move(current, current->next);
+        current = current->next;
     }
     return;
 }
